@@ -31,6 +31,21 @@ gem 'bcrypt', '~> 3.1.7'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+gem "font-awesome-rails"
+
+gem 'active_model_serializers'
+
+gem 'omniauth-twitter' # FOR INTEGRATING TWITTER
+gem 'twitter'
+gem 'cancancan'
+gem 'delayed_job_active_record'
+gem "delayed_job_web"
+gem "quiet_assets"
+
+gem 'rack-cors', :require => 'rack/cors'
+gem 'activeadmin', github: "activeadmin/activeadmin"
+
 # Simple Form with Bootstrap
 gem 'bootstrap-sass'
 gem 'simple_form'
