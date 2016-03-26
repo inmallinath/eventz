@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160326062208) do
+ActiveRecord::Schema.define(version: 20160326072226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 20160326062208) do
     t.string   "code"
     t.string   "description"
     t.integer  "state_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",  default: "now()", null: false
+    t.datetime "updated_at",  default: "now()", null: false
   end
 
   add_index "cities", ["state_id"], name: "index_cities_on_state_id", using: :btree
@@ -69,15 +69,15 @@ ActiveRecord::Schema.define(version: 20160326062208) do
     t.integer  "address_id"
     t.integer  "event_category_id"
     t.integer  "unit_id"
-    t.integer  "user_id"
+    t.integer  "speaker_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
 
   add_index "events", ["address_id"], name: "index_events_on_address_id", using: :btree
   add_index "events", ["event_category_id"], name: "index_events_on_event_category_id", using: :btree
+  add_index "events", ["speaker_id"], name: "index_events_on_speaker_id", using: :btree
   add_index "events", ["unit_id"], name: "index_events_on_unit_id", using: :btree
-  add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
   create_table "organization_addresses", force: :cascade do |t|
     t.integer  "organization_id"
@@ -114,12 +114,12 @@ ActiveRecord::Schema.define(version: 20160326062208) do
     t.string   "description"
     t.string   "url"
     t.string   "logo"
-    t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "representative_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
-  add_index "organizations", ["user_id"], name: "index_organizations_on_user_id", using: :btree
+  add_index "organizations", ["representative_id"], name: "index_organizations_on_representative_id", using: :btree
 
   create_table "providers", force: :cascade do |t|
     t.string   "name"
@@ -214,14 +214,14 @@ ActiveRecord::Schema.define(version: 20160326062208) do
   add_foreign_key "events", "addresses"
   add_foreign_key "events", "event_categories"
   add_foreign_key "events", "units"
-  add_foreign_key "events", "users"
+  add_foreign_key "events", "users", column: "speaker_id"
   add_foreign_key "organization_addresses", "addresses"
   add_foreign_key "organization_addresses", "organizations"
   add_foreign_key "organization_events", "events"
   add_foreign_key "organization_events", "organizations"
   add_foreign_key "organization_units", "organizations"
   add_foreign_key "organization_units", "units"
-  add_foreign_key "organizations", "users"
+  add_foreign_key "organizations", "users", column: "representative_id"
   add_foreign_key "providers", "users"
   add_foreign_key "states", "countries"
   add_foreign_key "taggings", "tags"
