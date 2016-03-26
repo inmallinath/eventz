@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160326072226) do
+ActiveRecord::Schema.define(version: 20160326202305) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,9 +58,9 @@ ActiveRecord::Schema.define(version: 20160326072226) do
   create_table "events", force: :cascade do |t|
     t.string   "title"
     t.string   "description"
-    t.boolean  "paid"
-    t.decimal  "price"
-    t.string   "recurrring"
+    t.boolean  "paid",              default: false
+    t.decimal  "price",             default: 0.0
+    t.string   "recurring",         default: "NO"
     t.datetime "date"
     t.datetime "start"
     t.datetime "end"
@@ -70,8 +70,8 @@ ActiveRecord::Schema.define(version: 20160326072226) do
     t.integer  "event_category_id"
     t.integer  "unit_id"
     t.integer  "speaker_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   add_index "events", ["address_id"], name: "index_events_on_address_id", using: :btree
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20160326072226) do
     t.integer  "representative_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.string   "location"
   end
 
   add_index "organizations", ["representative_id"], name: "index_organizations_on_representative_id", using: :btree
@@ -170,10 +171,10 @@ ActiveRecord::Schema.define(version: 20160326072226) do
   create_table "units", force: :cascade do |t|
     t.string   "code"
     t.string   "description"
-    t.integer  "capacity"
+    t.integer  "capacity",     default: 0
     t.integer  "unit_type_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   add_index "units", ["unit_type_id"], name: "index_units_on_unit_type_id", using: :btree
@@ -196,13 +197,14 @@ ActiveRecord::Schema.define(version: 20160326072226) do
     t.string   "mobile"
     t.string   "password_digest"
     t.string   "role"
-    t.boolean  "admin"
+    t.boolean  "admin",                  default: false
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
     t.string   "auth_token"
     t.integer  "address_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "image"
   end
 
   add_index "users", ["address_id"], name: "index_users_on_address_id", using: :btree
