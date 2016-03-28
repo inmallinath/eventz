@@ -1,6 +1,4 @@
 source 'https://rubygems.org'
-
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5.1'
 # Use postgresql as the database for Active Record
@@ -26,29 +24,32 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
+# Administration of website
+gem 'activeadmin', github: "activeadmin/activeadmin"
+
+# Authorization of Website access
+gem 'cancancan'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem "font-awesome-rails"
-
-gem 'active_model_serializers'
-
+# Third Party Sign-in Providers
 gem 'omniauth-twitter' # FOR INTEGRATING TWITTER
 gem 'twitter'
-gem 'cancancan'
+
 gem 'delayed_job_active_record'
 gem "delayed_job_web"
-gem "quiet_assets"
 
+# FOR API's
+gem 'active_model_serializers'
 gem 'rack-cors', :require => 'rack/cors'
-gem 'activeadmin', github: "activeadmin/activeadmin"
 
 # Simple Form with Bootstrap
 gem 'bootstrap-sass'
 gem 'simple_form'
+gem "font-awesome-rails"
 
 # GOOGLE MAP INTEGRATION
 gem 'geocoder'
@@ -56,6 +57,18 @@ gem 'gmaps4rails'
 
 # PAYMENT INTEGRATION
 gem "stripe"
+
+# Image Uploaders
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
+gem 'mini_magick'
+gem 'fog'
+gem 'fog-aws'
+
+# check mailer functionality
+gem "letter_opener", :group => :development
+
+# Hide unwanted info on console screen
+gem "quiet_assets"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

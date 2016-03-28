@@ -1,0 +1,11 @@
+<h1>Countries, Cities and States</h1>
+
+<%= form_for :address, url: {action: "show"}, html: {method: "get"} do |f| %>
+  <%= f.select :country_id, options_for_select(@countries.collect { |country|
+    [country.description.titleize, country.id] }, 1), {}, { id: 'countries_select' } %>
+  <%= f.select :state_id, options_for_select(@states.collect { |state|
+    [state.description.titleize, state.id] }, 0), {}, { id: 'states_select' } %>
+  <%= f.select :city_id, options_for_select(@cities.collect { |city|
+    [city.code.titleize, city.id] }, 0), {}, { id: 'cities_select' } %>
+  <%= f.submit "Go!" %>
+<% end %>

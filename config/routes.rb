@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  # root 'welcome#index'
+
+  get 'welcome/index'
+  get '/', to: redirect('/welcome/index')
+
+  get 'welcome/update_states', as: 'update_states'
+  get 'welcome/update_cities', as: 'update_cities'
+  get 'welcome/show'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
