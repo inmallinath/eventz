@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class OldUser < ActiveRecord::Base
   belongs_to :address
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   validates :password, presence: true, if: :changing_password?
   validates :password_confirmation, presence: true, if: :changing_password?
   validates :email, presence: true
-  validates_format_of :user_name, with: /^[a-zA-Z0-9_\.]*$/#, :multiline => true
+  # validates_format_of :user_name, with: /^[a-zA-Z0-9_\.]*$/#, :multiline => true
   validates_format_of :mobile, with: /\A(\d{10}|\(?\d{3}\)?[-. ]\d{3}[-.]\d{4})\z/
   validates_format_of :email, with: /\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i
 
