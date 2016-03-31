@@ -1,4 +1,4 @@
-<h1>Countries, Cities and States</h1>
+<h1>Countries, Cities and States</h1> <%= link_to "Signout", destroy_user_session_path, method: :delete %>
 
 <%= form_for :address, url: {action: "show"}, html: {method: "get"} do |f| %>
   <%= f.select :country_id, options_for_select(@countries.collect { |country|

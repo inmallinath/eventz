@@ -1,4 +1,6 @@
 class WelcomeController < ApplicationController
+  before_action :authenticate_user!
+  
   def index
     @countries = Country.all
     @states = State.where("country_id=?", Country.first.id)
