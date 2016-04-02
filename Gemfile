@@ -29,6 +29,7 @@ gem 'activeadmin', github: "activeadmin/activeadmin"
 
 # Authentication
 gem 'devise', '~> 3.4'
+
 # Authorization of Website access
 gem 'cancancan'
 # Use Unicorn as the app server
@@ -60,6 +61,7 @@ gem "font-awesome-rails"
 # GOOGLE MAP INTEGRATION
 gem 'geocoder'
 gem 'gmaps4rails'
+gem 'underscore-rails'
 
 # PAYMENT INTEGRATION
 gem "stripe"

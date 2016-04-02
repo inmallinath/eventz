@@ -1,11 +1,13 @@
-<h1>Countries, Cities and States</h1> <%= link_to "Signout", destroy_user_session_path, method: :delete %>
+<h1> User Location</h1>
 
-<%= form_for :address, url: {action: "show"}, html: {method: "get"} do |f| %>
+<%= simple_form_for :address, url: {action: "create"}, html: {method: "post"} do |f| %>
+  <%= f.input :description, label: "Address" %>
+  <%= f.input :zip, label: "Zip / Postal Code" %>
   <%= f.select :country_id, options_for_select(@countries.collect { |country|
     [country.description.titleize, country.id] }, 1), {}, { id: 'countries_select' } %>
   <%= f.select :state_id, options_for_select(@states.collect { |state|
     [state.description.titleize, state.id] }, 0), {}, { id: 'states_select' } %>
   <%= f.select :city_id, options_for_select(@cities.collect { |city|
     [city.code.titleize, city.id] }, 0), {}, { id: 'cities_select' } %>
-  <%= f.submit "Go!" %>
+  <%= f.submit %>
 <% end %>

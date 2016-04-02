@@ -1,0 +1,379 @@
+g model account first_name last_name email password_digest
+
+use the below line to create the model and the controller
+
+bin/rails g resource user - create this as a model with data fields and it creates the controller
+
+When you fork a database app from github use the below command to create the data along with the database
+bin/rake db:drop db:create db:migrate db:seed
+
+brails g model chapter title:string course:references
+brails g model comment body:text commentable:references
+brails g model comment body:text commentable:references{polymorphic}
+
+users = User.all Campaign.all.each {|c| c.update(user: users.sample)}
+users = User.all Campaign.all.each {|c| c.update(user: users.sample)}
+
+bin/rails g model answer body:text question:references
+
+brails g migration add_aasm_state_to_campaigns asm_state:string:index
+
+brails g scaffold discussion title body
+
+Post.find(1).destroy
+
+TO RESET DB and load only categories for blog:
+
+rake db:schema:load
+rake db:seed
+
+Post.joins(:favorites).group("id").order("count(*) DESC").select("title, count(*)”)
+
+u.liked_question_ids = [101,102]
+
+bin/rails g model campaign name description:text goal:integer end_date:datetime
+bin/rails g migration add_category_references_to_posts category:references
+bin/rails g migration add_address_references_to_users address:references
+bin/rails g resource user first_name last_name email password_digest post:references comment:references
+
+bin/rails g model user first_name last_name email password_digest
+bin/rails g migration AddUserReferencesToComments user:references
+bin/rails g migration AddUserReferencesToPosts user:references
+
+brails g migration add_geocoding_fields_to_campaigns address longitude:float latitude:float
+brails g migration add_geocoding_fields_to_users address longitude:float latitude:float
+User.all.each{|u| u.update(address: "142 W Hastings, Vancouver BC")}
+
+addresses = [address array]
+Campaign.limit(100).each {|c| c.update(address: addresses.sample)}
+Campaign.where(latitude: nil).limit(50).each {|c| c.update(address: addresses.sample)}
+Campaign.near([user.latitude, user.longitude], 50, units: :km)
+
+brails g migration add_aasm_state_to_campaigns aasm_state:string:index
+
+brails g model reward campaign:references title amount:integer
+
+brails g migration add_oauth_fields_to_users uid provider twitter_token twitter_secret twitter_raw_data:text
+
+bin/rails g migration add_omniauth_fields_to_users uid provider
+bin/rails g migration add_twitter_fields_to_users twitter_consumer_token twitter_consumer_secret twitter_raw_data
+
+brails g migration add_api_key_to_users api_key:string:index
+bin/rails g migration add_slug_to_campaigns slug:string:uniq
+
+bin/rails g model favorite user:references post:references
+bin/rails g model tag name bin/rails g model tagging tag:references question:references bin/rake db:migrate
+
+bin/rails g migration add_category_references_to_questions category:references
+
+bin/rails g model comment body:text answer:references
+bin/rails g migration add_indices_to_questions
+
+TO DROP AND CREATE AND MIGRATE A DB bin/rake db:test:prepare
+
+bin/rails g migration add_image_campaigns image
+bin/rails g model question title:string body:text
+bin/rake db:rollback
+bin/rails g migration add_view_count_to_questions
+
+Question.where({view_count: 0})
+Question.where("view_count > 0")
+Question.where("view_count > 0").each {|x| puts x.title}//SELECT "questions".* FROM "questions" WHERE (view_count > 0)
+Question.where({view_count:0, title: "abc"}) // SELECT "questions".* FROM "questions" WHERE "questions"."view_count" = $1 AND "questions"."title" = $2  [["view_count", 0],
+ ["title", "abc"]]
+ Question.where(["created_at > ?", 5.days.ago])
+ Question.where(["created_at > ? OR view_count = 0", 5.minutes.ago])
+ Question.where(["title ILIKE ? OR body ILIKE ?", "%my%", "%my%"])
+ 100.times { Question.create(title: Faker::Company.bs, body: Faker::Lorem.paragraph, view_count: rand(10)) }
+ Question.limit(10)
+ Question.limit(10).offset(10)
+ Question.create({title: "Some new question", body: "Some new question body", view_count: 8})
+
+ 100.times do
+  Question.create title: Faker::Company.bs,
+                  body:  Faker::Lorem.paragraph,
+                  view_count: rand(100)
+end
+
+Question.where(["view_count > ?", 10]).where(["title ILIKE ?", "a"]).order("id DESC").limit(10).offset(10)
+
+Question.select("avg(view_count) as count").group("title")
+
+If you want to practice your SQL skills you can always execute raw SQL queries with ActiveRecord. You can do:
+
+connection = ActiveRecord::Base.connection
+connection.execute("SELECT * FROM questions WHERE id=1;")
+
+where(["price between ? and ?", 100, 300]).order("name").limit(10)
+where(["first_name = ? or last_name = ?", "john", "john"])
+where(["price != sale_price"]).order("sale_price, created_at DESC").limit(3)
+scope :within_range, -> (date1, date2) { where("created_at >= ? AND created_at <= ?", date1 < date2 ? date1 : date2, date1 > date2 ? date1 : date2) }
+
+
+["coffee","Hockey", "Snow", "Bow Buns", "Money"].each do |cat|
+  Tag.create(name: cat)
+end
+bin/rake db:seed
+
+
+100.times do
+  q = Question.create     title: Faker::Company.bs,
+                          body: Faker::Lorem.paragraph,
+                          view_count: rand(100)
+  10.times do
+    a = q.answers.create(body: Faker::Company.catch_phrase)
+    5.times {a.comments.create(body: Faker::Company.bs)}
+  end
+end
+brake db:seed
+
+scope :created_after, -> (date) {where ("date(created_at) > ? "),date}
+# the date method used returns the date portion on a timestamp column
+update users set created_at='2016-01-24' where id > 95;
+update users set created_at='2016-01-29' where id > 80 and id < 95;
+User.created_after(5.days.ago)
+
+
+
+
+2.3.0 :020 > u.user_ideas
+
+  Idea Load (0.6ms)  SELECT "ideas".* FROM "ideas" INNER JOIN "members" ON "ideas"."id" = "members"."idea_id" WHERE "members"."user_id" = $1  [["user_id", 2]]
+
++-----+---------------+--------------+---------------+---------------+---------+
+
+| id  | title         | body         | created_at    | updated_at    | user_id |
+
++-----+---------------+--------------+---------------+---------------+---------+
+
+| 100 | Cross-plat... | Lomo post... | 2016-02-22... | 2016-02-22... |         |
+
+| 106 | Mallinath'... | Mallinath... | 2016-02-22... | 2016-02-22... | 1       |
+
++-----+---------------+--------------+---------------+---------------+---------+
+
+2 rows in set
+
+2.3.0 :021 > u.user_idea_ids
+
+[
+
+    [0] 100,
+
+    [1] 106
+
+]
+
+2.3.0 :022 > u.user_idea_ids = [10, 20]
+
+  Idea Load (1.2ms)  SELECT "ideas".* FROM "ideas" WHERE "ideas"."id" IN (10, 20)
+
+   (0.2ms)  BEGIN
+
+  SQL (0.3ms)  DELETE FROM "members" WHERE "members"."user_id" = $1 AND "members"."idea_id" IN (100, 106)  [["user_id", 2]]
+
+  Member Exists (0.3ms)  SELECT  1 AS one FROM "members" WHERE ("members"."user_id" = 2 AND "members"."idea_id" = 10) LIMIT 1
+
+  SQL (0.5ms)  INSERT INTO "members" ("user_id", "idea_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["user_id", 2], ["idea_id", 10], ["created_at", "2016-02-22 21:19:31.106206"], ["updated_at", "2016-02-22 21:19:31.106206"]]
+
+  Member Exists (0.3ms)  SELECT  1 AS one FROM "members" WHERE ("members"."user_id" = 2 AND "members"."idea_id" = 20) LIMIT 1
+
+  SQL (0.4ms)  INSERT INTO "members" ("user_id", "idea_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["user_id", 2], ["idea_id", 20], ["created_at", "2016-02-22 21:19:31.110805"], ["updated_at", "2016-02-22 21:19:31.110805"]]
+
+   (1.3ms)  COMMIT
+
+[
+
+    [0] 10,
+
+    [1] 20
+
+]
+User.where(api_key: nil).each {|u| u.send(:generate_api_key);  u.save}
+
+blog_project $ bin/rails c
+Running via Spring preloader in process 84260
+Loading development environment (Rails 4.2.5.1)
+2.3.0 :001 > f = Favorite.all
+  Favorite Load (0.7ms)  SELECT "favorites".* FROM "favorites"
+[]
+2.3.0 :002 > p = Post.last
+  Post Load (0.7ms)  SELECT  "posts".* FROM "posts"  ORDER BY "posts"."id" DESC LIMIT 1
++-----+------------+-----------+------------+------------+---------+-----------+
+| id  | title      | body      | created_at | updated_at | user_id | catego... |
++-----+------------+-----------+------------+------------+---------+-----------+
+| 512 | Use CSS... | When u... | 2016-02... | 2016-02... | 1       | 1         |
++-----+------------+-----------+------------+------------+---------+-----------+
+1 row in set
+2.3.0 :003 > u = User.last
+  User Load (0.9ms)  SELECT  "users".* FROM "users"  ORDER BY "users"."id" DESC LIMIT 1
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+| id | fir... | last... | email  | pass... | cre... | upda... | admin | aut... |
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+| 3  | Arya   | Igoor   | ary... | $2a$... | 201... | 2016... | false | 4qW... |
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+1 row in set
+2.3.0 :004 > u.favored_posts << p
+   (0.2ms)  BEGIN
+  Favorite Exists (1.1ms)  SELECT  1 AS one FROM "favorites" WHERE ("favorites"."user_id" = 3 AND "favorites"."post_id" = 512) LIMIT 1
+  SQL (0.9ms)  INSERT INTO "favorites" ("user_id", "post_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["user_id", 3], ["post_id", 512], ["created_at", "2016-02-22 06:48:45.167349"], ["updated_at", "2016-02-22 06:48:45.167349"]]
+   (6.4ms)  COMMIT
+  Post Load (0.4ms)  SELECT "posts".* FROM "posts" INNER JOIN "favorites" ON "posts"."id" = "favorites"."post_id" WHERE "favorites"."user_id" = $1  [["user_id", 3]]
++-----+------------+-----------+------------+------------+---------+-----------+
+| id  | title      | body      | created_at | updated_at | user_id | catego... |
++-----+------------+-----------+------------+------------+---------+-----------+
+| 512 | Use CSS... | When u... | 2016-02... | 2016-02... | 1       | 1         |
++-----+------------+-----------+------------+------------+---------+-----------+
+1 row in set
+
+
+2.3.0 :006 > p = Post.last
+  Post Load (0.6ms)  SELECT  "posts".* FROM "posts"  ORDER BY "posts"."id" DESC LIMIT 1
++-----+------------+-----------+------------+------------+---------+-----------+
+| id  | title      | body      | created_at | updated_at | user_id | catego... |
++-----+------------+-----------+------------+------------+---------+-----------+
+| 512 | Use CSS... | When u... | 2016-02... | 2016-02... | 1       | 1         |
++-----+------------+-----------+------------+------------+---------+-----------+
+1 row in set
+2.3.0 :007 > u = User.first
+  User Load (0.6ms)  SELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+| id | fir... | last... | email  | pass... | cre... | upda... | admin | aut... |
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+| 1  | Mal... | Nagaraj | inm... | $2a$... | 201... | 2016... | false |        |
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+1 row in set
+2.3.0 :008 > p.users << u
+   (0.2ms)  BEGIN
+  Favorite Exists (0.3ms)  SELECT  1 AS one FROM "favorites" WHERE ("favorites"."user_id" = 1 AND "favorites"."post_id" = 512) LIMIT 1
+  SQL (0.3ms)  INSERT INTO "favorites" ("post_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["post_id", 512], ["user_id", 1], ["created_at", "2016-02-22 06:54:58.002405"], ["updated_at", "2016-02-22 06:54:58.002405"]]
+   (1.4ms)  COMMIT
+  User Load (0.3ms)  SELECT "users".* FROM "users" INNER JOIN "favorites" ON "users"."id" = "favorites"."user_id" WHERE "favorites"."post_id" = $1  [["post_id", 512]]
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+| id | fir... | last... | email  | pass... | cre... | upda... | admin | aut... |
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+| 3  | Arya   | Igoor   | ary... | $2a$... | 201... | 2016... | false | 4qW... |
+| 1  | Mal... | Nagaraj | inm... | $2a$... | 201... | 2016... | false |        |
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+2 rows in set
+
+2.3.0 :009 > p = Post.find 100
+  Post Load (0.2ms)  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 100]]
++-----+------------+-----------+------------+------------+---------+-----------+
+| id  | title      | body      | created_at | updated_at | user_id | catego... |
++-----+------------+-----------+------------+------------+---------+-----------+
+| 100 | Cross-p... | Microd... | 2016-02... | 2016-02... |         |           |
++-----+------------+-----------+------------+------------+---------+-----------+
+1 row in set
+2.3.0 :010 > u = User.find 3
+  User Load (0.4ms)  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 3]]
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+| id | fir... | last... | email  | pass... | cre... | upda... | admin | aut... |
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+| 3  | Arya   | Igoor   | ary... | $2a$... | 201... | 2016... | false | 4qW... |
++----+--------+---------+--------+---------+--------+---------+-------+--------+
+1 row in set
+2.3.0 :011 > Favorite.create(post: p, user: u)
+   (0.2ms)  BEGIN
+  Favorite Exists (0.4ms)  SELECT  1 AS one FROM "favorites" WHERE ("favorites"."user_id" = 3 AND "favorites"."post_id" = 100) LIMIT 1
+  SQL (0.4ms)  INSERT INTO "favorites" ("post_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["post_id", 100], ["user_id", 3], ["created_at", "2016-02-22 06:57:59.024334"], ["updated_at", "2016-02-22 06:57:59.024334"]]
+   (1.2ms)  COMMIT
++----+---------+---------+-------------------------+-------------------------+
+| id | user_id | post_id | created_at              | updated_at              |
++----+---------+---------+-------------------------+-------------------------+
+| 3  | 3       | 100     | 2016-02-22 06:57:59 UTC | 2016-02-22 06:57:59 UTC |
++----+---------+---------+-------------------------+-------------------------+
+1 row in set
+
+
+2.3.0 :001 > Tag.all
+  Tag Load (0.5ms)  SELECT "tags".* FROM "tags"
++----+----------+-------------------------+-------------------------+
+| id | name     | created_at              | updated_at              |
++----+----------+-------------------------+-------------------------+
+| 1  | coffee   | 2016-02-19 17:44:08 UTC | 2016-02-19 17:44:08 UTC |
+| 2  | Hockey   | 2016-02-19 17:44:08 UTC | 2016-02-19 17:44:08 UTC |
+| 3  | Snow     | 2016-02-19 17:44:08 UTC | 2016-02-19 17:44:08 UTC |
+| 4  | Bow Buns | 2016-02-19 17:44:08 UTC | 2016-02-19 17:44:08 UTC |
+| 5  | Money    | 2016-02-19 17:44:08 UTC | 2016-02-19 17:44:08 UTC |
++----+----------+-------------------------+-------------------------+
+5 rows in set
+
+2.3.0 :008 > q=Question.last
+  Question Load (0.8ms)  SELECT  "questions".* FROM "questions"  ORDER BY "questions"."id" DESC LIMIT 1
++-----+-------+----------+----------+----------+----------+----------+---------+
+| id  | title | body     | creat... | updat... | view_... | categ... | user_id |
++-----+-------+----------+----------+----------+----------+----------+---------+
+| 318 | Exams | Exam One | 2016-... | 2016-... | 1        | 2        | 5       |
++-----+-------+----------+----------+----------+----------+----------+---------+
+1 row in set
+2.3.0 :009 > q.tag_ids = [2,4]
+  Tag Load (0.4ms)  SELECT "tags".* FROM "tags" WHERE "tags"."id" IN (2, 4)
+  Tag Load (0.7ms)  SELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."question_id" = $1  [["question_id", 318]]
+   (0.1ms)  BEGIN
+  Tagging Exists (0.3ms)  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 2 AND "taggings"."question_id" = 318) LIMIT 1
+  SQL (0.8ms)  INSERT INTO "taggings" ("question_id", "tag_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["question_id", 318], ["tag_id", 2], ["created_at", "2016-02-19 17:47:52.132191"], ["updated_at", "2016-02-19 17:47:52.132191"]]
+  Tagging Exists (0.3ms)  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 4 AND "taggings"."question_id" = 318) LIMIT 1
+  SQL (0.4ms)  INSERT INTO "taggings" ("question_id", "tag_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["question_id", 318], ["tag_id", 4], ["created_at", "2016-02-19 17:47:52.136912"], ["updated_at", "2016-02-19 17:47:52.136912"]]
+   (6.3ms)  COMMIT
+[
+    [0] 2,
+    [1] 4
+]
+
+
+
+2.3.0 :001 > Tag.all
+  Tag Load (0.5ms)  SELECT "tags".* FROM "tags"
++----+----------+-------------------------+-------------------------+
+| id | name     | created_at              | updated_at              |
++----+----------+-------------------------+-------------------------+
+| 1  | coffee   | 2016-02-19 17:44:08 UTC | 2016-02-19 17:44:08 UTC |
+| 2  | Hockey   | 2016-02-19 17:44:08 UTC | 2016-02-19 17:44:08 UTC |
+| 3  | Snow     | 2016-02-19 17:44:08 UTC | 2016-02-19 17:44:08 UTC |
+| 4  | Bow Buns | 2016-02-19 17:44:08 UTC | 2016-02-19 17:44:08 UTC |
+| 5  | Money    | 2016-02-19 17:44:08 UTC | 2016-02-19 17:44:08 UTC |
++----+----------+-------------------------+-------------------------+
+5 rows in set
+
+2.3.0 :008 > q=Question.last
+  Question Load (0.8ms)  SELECT  "questions".* FROM "questions"  ORDER BY "questions"."id" DESC LIMIT 1
++-----+-------+----------+----------+----------+----------+----------+---------+
+| id  | title | body     | creat... | updat... | view_... | categ... | user_id |
++-----+-------+----------+----------+----------+----------+----------+---------+
+| 318 | Exams | Exam One | 2016-... | 2016-... | 1        | 2        | 5       |
++-----+-------+----------+----------+----------+----------+----------+---------+
+1 row in set
+2.3.0 :009 > q.tag_ids = [2,4]
+  Tag Load (0.4ms)  SELECT "tags".* FROM "tags" WHERE "tags"."id" IN (2, 4)
+  Tag Load (0.7ms)  SELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."question_id" = $1  [["question_id", 318]]
+   (0.1ms)  BEGIN
+  Tagging Exists (0.3ms)  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 2 AND "taggings"."question_id" = 318) LIMIT 1
+  SQL (0.8ms)  INSERT INTO "taggings" ("question_id", "tag_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["question_id", 318], ["tag_id", 2], ["created_at", "2016-02-19 17:47:52.132191"], ["updated_at", "2016-02-19 17:47:52.132191"]]
+  Tagging Exists (0.3ms)  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 4 AND "taggings"."question_id" = 318) LIMIT 1
+  SQL (0.4ms)  INSERT INTO "taggings" ("question_id", "tag_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["question_id", 318], ["tag_id", 4], ["created_at", "2016-02-19 17:47:52.136912"], ["updated_at", "2016-02-19 17:47:52.136912"]]
+   (6.3ms)  COMMIT
+[
+    [0] 2,
+    [1] 4
+]
+2.3.0 :010 > q.tag_ids = [4,5]
+  Tag Load (0.6ms)  SELECT "tags".* FROM "tags" WHERE "tags"."id" IN (4, 5)
+   (0.2ms)  BEGIN
+  SQL (0.2ms)  DELETE FROM "taggings" WHERE "taggings"."question_id" = $1 AND "taggings"."tag_id" = 2  [["question_id", 318]]
+  Tagging Exists (0.3ms)  SELECT  1 AS one FROM "taggings" WHERE ("taggings"."tag_id" = 5 AND "taggings"."question_id" = 318) LIMIT 1
+  SQL (0.4ms)  INSERT INTO "taggings" ("question_id", "tag_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["question_id", 318], ["tag_id", 5], ["created_at", "2016-02-19 17:49:18.423405"], ["updated_at", "2016-02-19 17:49:18.423405"]]
+   (1.2ms)  COMMIT
+[
+    [0] 4,
+    [1] 5
+]
+
+["Art", "Science", "Cats", "Sports", "Technology"].each do |cat|
+  Category.create(name: cat)
+end
+
+
+event_detail
+
+has_many :speakers, class: "User"
