@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   # Populate the related drop downs for a country
   get 'addresses/update_states', as: 'update_states'
   get 'addresses/update_cities', as: 'update_cities'
-  # get 'welcome/show'
+  get 'addresses/show'
   # ADDRESS CONTROLLER ROUTES
   resources :addresses
 

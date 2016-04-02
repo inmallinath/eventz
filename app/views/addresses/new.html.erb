@@ -1,8 +1,13 @@
 <h1> User Location</h1>
-<%= simple_form_for @address do |f| %>
+
+<%= simple_form_for :address, url: {action: "create"}, html: {method: "post"} do |f| %>
   <%= f.input :description, label: "Address" %>
-  <%= f.input :zip, label: "Postal/Zip Code" %>
-  <%= f.collection_select(:country, Country.all, :id, :description)%>
-  <%= f.collection_select(:state, @states, :id, :description)%>
-  <%= f.submit class: "btn btn-primary" %>
+  <%= f.input :zip, label: "Zip / Postal Code" %>
+  <%= f.select :country_id, options_for_select(@countries.collect { |country|
+    [country.description.titleize, country.id] }, 1), {}, { id: 'countries_select' } %>
+  <%= f.select :state_id, options_for_select(@states.collect { |state|
+    [state.description.titleize, state.id] }, 0), {}, { id: 'states_select' } %>
+  <%= f.select :city_id, options_for_select(@cities.collect { |city|
+    [city.code.titleize, city.id] }, 0), {}, { id: 'cities_select' } %>
+  <%= f.submit %>
 <% end %>

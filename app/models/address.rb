@@ -10,7 +10,7 @@ class Address < ActiveRecord::Base
   # has_many :events, dependent: :nullify
 
   def full_street_address
-    [description, zip, city.code, state.description, country.description].compact.join(', ')
+    [description, zip, city, state, description].compact.join(', ')
   end
 
 end
