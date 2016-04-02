@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160331113922) do
+ActiveRecord::Schema.define(version: 20160331131712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,8 +94,10 @@ ActiveRecord::Schema.define(version: 20160331113922) do
     t.string   "urls"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.integer  "address_id"
   end
 
+  add_index "identities", ["address_id"], name: "index_identities_on_address_id", using: :btree
   add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
 
   create_table "oldproviders", force: :cascade do |t|
@@ -282,6 +284,7 @@ ActiveRecord::Schema.define(version: 20160331113922) do
   add_foreign_key "events", "event_categories"
   add_foreign_key "events", "units"
   add_foreign_key "events", "user_profiles", column: "speaker_id"
+  add_foreign_key "identities", "addresses"
   add_foreign_key "identities", "users"
   add_foreign_key "oldproviders", "user_profiles", column: "user_id"
   add_foreign_key "organization_addresses", "addresses"

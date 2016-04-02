@@ -1,0 +1,8 @@
+<h1> User Location</h1>
+<%= simple_form_for @address do |f| %>
+  <%= f.input :description, label: "Address" %>
+  <%= f.input :zip, label: "Postal/Zip Code" %>
+  <%= f.collection_select(:country, Country.all, :id, :description)%>
+  <%= f.collection_select(:state, @states, :id, :description)%>
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>
