@@ -22,10 +22,13 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.7'
+# gem 'bcrypt', '~> 3.1.7'
 
 # Administration of website
 gem 'activeadmin', github: "activeadmin/activeadmin"
+
+# Authentication
+gem 'devise', '~> 3.4'
 
 # Authorization of Website access
 gem 'cancancan'
@@ -36,9 +39,13 @@ gem 'cancancan'
 # gem 'capistrano-rails', group: :development
 
 # Third Party Sign-in Providers
+gem 'omniauth'
 gem 'omniauth-twitter' # FOR INTEGRATING TWITTER
 gem 'twitter'
+gem 'omniauth-google-oauth2'
+gem 'google-api-client', '<0.9', :require => 'google/api_client'
 
+# Background Jobs
 gem 'delayed_job_active_record'
 gem "delayed_job_web"
 
@@ -54,6 +61,7 @@ gem "font-awesome-rails"
 # GOOGLE MAP INTEGRATION
 gem 'geocoder'
 gem 'gmaps4rails'
+gem 'underscore-rails'
 
 # PAYMENT INTEGRATION
 gem "stripe"
