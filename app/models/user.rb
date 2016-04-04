@@ -29,4 +29,21 @@ class User < ActiveRecord::Base
    def full_name
      "#{first_name} #{last_name}".titleize
    end
+
+  #  def speaker?
+  #    if "#{role} = Speaker"
+  #      true
+  #    else
+  #      false
+  #    end
+  #  end
+   #
+  #  def host?
+  #    if "#{role} = Host"
+  #      true
+  #    else
+  #      false
+  #    end
+  #  end
+
 end

@@ -5,12 +5,14 @@ class Address < ActiveRecord::Base
   geocoded_by :full_street_address
     after_validation :geocode
 
+
+  # has_one :event
   # has_many :users, dependent: :nullify
   # has_many :organizations, dependent: :nullify
-  # has_many :events, dependent: :nullify
+  has_many :events, inverse_of: :address, dependent: :nullify
 
   def full_street_address
-    [description, zip, city, state, description].compact.join(', ')
+    [description, zip, city.code, state.code, country.description].compact.join(', ')
   end
 
 end

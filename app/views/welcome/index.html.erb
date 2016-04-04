@@ -1,1 +1,10 @@
-<h1>Root of web site</h1>
+<div class="fullscreen-bg">
+  <video loop muted autoplay poster="final_shot.png" class="fullscreen-bg__video">
+      <source src="/assets/Background.mp4" type="video/mp4">
+  </video>
+</div>
+
+<%= simple_form_for 'city', url: events_path, method: :get do |f| %>
+  <%= f.input "", :collection => @cities.map{|c| [c.city_country, c.id]}, prompt: "Select a city to explore eventz" %>
+  <%= f.submit "Explore!"%>
+<% end %>

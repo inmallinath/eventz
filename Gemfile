@@ -55,6 +55,7 @@ gem "delayed_job_web"
 # FOR API's
 gem 'active_model_serializers'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'httparty'
 
 # Simple Form with Bootstrap
 gem 'bootstrap-sass'
@@ -78,8 +79,7 @@ gem 'fog-aws'
 # check mailer functionality
 gem "letter_opener", :group => :development
 
-# Hide unwanted info on console screen
-gem "quiet_assets"
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -87,6 +87,8 @@ group :development, :test do
   gem "awesome_print"
   gem "interactive_editor"
   gem "hirb"
+  # Hide unwanted info on console screen
+  gem "quiet_assets"
 end
 
 group :development do

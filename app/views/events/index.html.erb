@@ -1,0 +1,77 @@
+<div class="page-header">
+  <%= link_to new_event_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Event
+  <% end %>
+</div>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Event Name</th>
+        <th>Location</th>
+        <th>Date</th>
+      </tr>
+      <tr>
+        <td colspan="100%">
+          <h1>Featured Events</h1>
+        </td>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @events) do |event| %>
+            <td><%= event.address.latitude %></td>
+            <td><%= event.address.longitude %></td>
+            <td><%= event.title %></td>
+            <td><%= event.address.description %></td>
+            <td><%= event.date %></td>
+      <% end %>
+
+  </table>
+</div>
+
+<h1>Meetup Events</h1>
+<p><%= link_to "Register to add new events", new_user_registration_path, method: :get, :class=>'btn btn-primary btn-lg', :id=>'register_button'%></p>
+<ul>
+  <% @meetup_events.each do |event| %>
+    <%#byebug%>
+    <li><%= event[:latitude] %></li>
+    <li><%= event[:longitude] %></li>
+    <li><%= event[:name] %></li>
+    <li><%= event[:location] %></li>
+    <li>Unknown</li>
+  <% end %>
+</ul>
+<!-- <span style="color:blue">City</span>
+<select id="city-id" name="city[id]">
+  <option value="Vancouver">Vancouver</option>
+  <option value="Calgary">Calgary</option>
+  <option value="Edmonton">Edmonton</option>
+  <option value="Winnipeg">Winnipeg</option>
+  <option value="Toronto">Toronto</option>
+  <option value="Ottawa">Ottawa</option>
+</select>
+<input type="text" size="57" id="city_textbox"> -->
+
+<div style='width: 800px;'>
+  <div id="multi_markers" style='width: 800px; height: 400px;'></div>
+</div>
+
+<script type="text/javascript">
+handler = Gmaps.build('Google');
+handler.buildMap({ provider: {}, internal: {id: 'multi_markers'}}, function(){
+  markers = handler.addMarkers(<%=raw @map_hash.to_json %>);
+  handler.bounds.extendWith(markers);
+  handler.fitMapToBounds();
+});
+// handler = Gmaps.build('Google');
+// handler.buildMap({ provider: {}, internal: {id: 'multi_markers'}}, function(){
+//   markers = handler.addMarkers(<%=raw @meetup_events.to_json %>);
+//   handler.bounds.extendWith(markers);
+//   handler.fitMapToBounds();
+// });
+
+</script>

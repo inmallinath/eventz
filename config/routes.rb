@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
-
+  # GET MEETUP EVENTS
+  match ':controller(/:action(/:id(.:format)))', via: :get
+  # ROOT OF THE APPLICATION
+  root 'welcome#index'
+  # AUTHENTICATION FOR THE APP
   devise_for :users, class_name: 'FormUser', :controllers => { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations'}
 
-  root 'welcome#index'
-
   # WELCOME CONTROLLER ROUTES
-  resources :welcome, only: [:index, :show]
+  # resources :welcome, only: [:index, :show]
 
   # ADDRESS CONTROLLER ROUTES
   resources :addresses do
@@ -18,7 +20,8 @@ Rails.application.routes.draw do
   resources :calendars, only: [:index]
 
   # EVENT ROUTES
-  resource :events, only: [:new, :create]
+  resources :events
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
