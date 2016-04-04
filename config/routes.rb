@@ -1,17 +1,19 @@
 Rails.application.routes.draw do
+
   devise_for :users, class_name: 'FormUser', :controllers => { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations'}
-  # root 'welcome#index'
+
+  root 'welcome#index'
+
   # WELCOME CONTROLLER ROUTES
+  resources :welcome, only: [:index, :show]
 
   # ADDRESS CONTROLLER ROUTES
-  resources :addresses
-  get 'addresses/index'
-  get '/', to: redirect('/addresses/index')
-  # Populate the related drop downs for a country
-  get 'addresses/update_states', as: 'update_states'
-  get 'addresses/update_cities', as: 'update_cities'
-  get 'addresses/show'
-
+  resources :addresses do
+    collection do
+      get :update_states
+      get :update_cities
+    end
+  end
   # CALENDAR ROUTES
   resources :calendars, only: [:index]
 

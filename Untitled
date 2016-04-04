@@ -1,0 +1,36 @@
+addresses_index GET      /addresses/index(.:format)             addresses#index
+           update_states GET      /addresses/update_states(.:format)     addresses#update_states
+           update_cities GET      /addresses/update_cities(.:format)     addresses#update_cities
+          addresses_show GET      /addresses/show(.:format)              addresses#show
+               addresses GET      /addresses(.:format)                   addresses#index
+                         POST     /addresses(.:format)                   addresses#create
+             new_address GET      /addresses/new(.:format)               addresses#new
+            edit_address GET      /addresses/:id/edit(.:format)          addresses#edit
+                 address GET      /addresses/:id(.:format)               addresses#show
+                         PATCH    /addresses/:id(.:format)               addresses#update
+                         PUT      /addresses/:id(.:format)               addresses#update
+                         DELETE   /addresses/:id(.:format)               addresses#destroy
+
+
+MEMBER
+update_states_address GET      /addresses/:id/update_states(.:format) addresses#update_states
+  update_cities_address GET      /addresses/:id/update_cities(.:format) addresses#update_cities
+              addresses GET      /addresses(.:format)                   addresses#index
+                        POST     /addresses(.:format)                   addresses#create
+            new_address GET      /addresses/new(.:format)               addresses#new
+           edit_address GET      /addresses/:id/edit(.:format)          addresses#edit
+                address GET      /addresses/:id(.:format)               addresses#show
+                        PATCH    /addresses/:id(.:format)               addresses#update
+                        PUT      /addresses/:id(.:format)               addresses#update
+                        DELETE   /addresses/:id(.:format)               addresses#destroy
+COLLECTION
+update_states_addresses GET      /addresses/update_states(.:format)     addresses#update_states
+ update_cities_addresses GET      /addresses/update_cities(.:format)     addresses#update_cities
+               addresses GET      /addresses(.:format)                   addresses#index
+                         POST     /addresses(.:format)                   addresses#create
+             new_address GET      /addresses/new(.:format)               addresses#new
+            edit_address GET      /addresses/:id/edit(.:format)          addresses#edit
+                 address GET      /addresses/:id(.:format)               addresses#show
+                         PATCH    /addresses/:id(.:format)               addresses#update
+                         PUT      /addresses/:id(.:format)               addresses#update
+                         DELETE   /addresses/:id(.:format)               addresses#destroy
