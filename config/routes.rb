@@ -21,6 +21,18 @@ Rails.application.routes.draw do
 
   # EVENT ROUTES
   resources :events
+  # EVENT ORGANIZATIONS
+  resources :organizations
+  # EVENT UNITS
+  resources :units
+  # EVENT UNIT TYPES
+  resources :unit_types
+  # ORGANIZATION EVENTS
+  resources :organization_events
+  # EVENT CATEGORIES
+  resources :event_categories
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

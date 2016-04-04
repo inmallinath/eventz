@@ -1,0 +1,2 @@
+class OrganizationEventsController < ApplicationController
+end

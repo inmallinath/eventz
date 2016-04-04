@@ -1,6 +1,7 @@
 require 'meetup'
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
+  before_action :find_event, only: [:show, :edit, :update, :destroy]
 
   def index
     @city = City.find_by_id params[:city]
@@ -42,8 +43,8 @@ class EventsController < ApplicationController
   def create
     @event = Event.new event_params
     if @event.save
-      flash[:notice] = "Saved Successfully"
-      redirect_to calendar_path()
+      flash[:notice] = "Event Saved Successfully"
+      redirect_to event_path(@event) # currently using calendar_path
     else
       flash[:alert] = "Event could not be saved"
       render :new
@@ -51,11 +52,34 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.find params[:id]
+
+  end
+
+  def edit
+
+  end
+
+  def update
+    if @event.update event_params
+      flash[:notice] = "Event Updated Successfully"
+      redirect_to event_path(@event)
+    else
+      flash[:alert] = "Event Could not be Updated"
+      render :edit
+    end
+  end
+
+  def destroy
+    @event.destroy
+    redirect_to events_path, notice: "Removed successfully"
   end
   private
 
+  def find_event
+    @event = Event.find params[:id]
+  end
+
   def event_params
-    params.require(:event).permit([:title, :date])
+    params.require(:event).permit([:title, :description, :paid, :price, :date, :start, :end, :day_of_week, :event_data, :address_id, :event_category_id, :unit_id, :speaker_id])
   end
 end

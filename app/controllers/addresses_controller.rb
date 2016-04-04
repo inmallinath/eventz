@@ -1,5 +1,6 @@
 class AddressesController < ApplicationController
 before_action :authenticate_user!
+before_action :find_address, only: [:show, :edit, :update, :destroy]
 
   def new
     @address = Address.new
@@ -41,12 +42,31 @@ before_action :authenticate_user!
         # puts ">>>>>>>>>>>>>>>>>>>>>>>>"
         # @identity.address = @address
         # @identity.save
-        flash[:notice] = "Saved Successfully"
+        flash[:notice] = "Address Saved Successfully"
        redirect_to address_path(@address)
     else
-       flash[:alert] = "Could not be saved"
+       flash[:alert] = "Address Could not be saved"
        render :new
     end
+  end
+
+  def edit
+
+  end
+
+  def update
+    if @address.update address_params
+      flash[:notice] = "Address Updated Successfully"
+      redirect_to address_path(@address)
+    else
+      flash[:alert] = "Address could not be Updated"
+      render :edit
+    end
+  end
+
+  def destroy
+    @address.destroy
+    redirect_to addresses_path, notice: "Address Removed successfully"
   end
 
   private
