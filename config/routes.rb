@@ -1,16 +1,22 @@
 Rails.application.routes.draw do
   devise_for :users, class_name: 'FormUser', :controllers => { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations'}
-  #   root 'welcome#index'
+  # root 'welcome#index'
   # WELCOME CONTROLLER ROUTES
+
+  # ADDRESS CONTROLLER ROUTES
+  resources :addresses
   get 'addresses/index'
   get '/', to: redirect('/addresses/index')
   # Populate the related drop downs for a country
   get 'addresses/update_states', as: 'update_states'
   get 'addresses/update_cities', as: 'update_cities'
   get 'addresses/show'
-  # ADDRESS CONTROLLER ROUTES
-  resources :addresses
 
+  # CALENDAR ROUTES
+  resources :calendars, only: [:index]
+
+  # EVENT ROUTES
+  resource :events, only: [:new, :create]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
