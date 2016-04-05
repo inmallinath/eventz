@@ -1,0 +1,10 @@
+<h1>Tell us more about yourself</h1>
+Hello <%=current_user.identities.first.name%><br />
+<%=current_user.email%>
+<%= simple_form_for current_user, url: update_role_users_admin_path(current_user), method: :put do |f| %>
+  <%= f.error_notification %>
+  <div class="form-inputs">
+    <%= f.input :role, priority: [ "User" ], collection: [ "User", "Host", "Speaker"], prompt: "Please choose your intended role"%>
+  </div>
+    <%= f.button :submit, "Begin eVentz!" %>
+<% end %>

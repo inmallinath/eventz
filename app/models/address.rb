@@ -9,7 +9,9 @@ class Address < ActiveRecord::Base
   # has_one :event
   # has_many :users, dependent: :nullify
   # has_many :organizations, dependent: :nullify
-  has_many :events, inverse_of: :address, dependent: :nullify
+  # has_many :events, inverse_of: :address, dependent: :nullify
+  # has_one :event
+  belongs_to :event
 
   def full_street_address
     [description, zip, city.code, state.code, country.description].compact.join(', ')

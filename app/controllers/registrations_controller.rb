@@ -23,4 +23,13 @@ class RegistrationsController < Devise::RegistrationsController
   def account_update_params
     params.require(:user).permit(:first_name, :last_name, :role, :email, :password, :password_confirmation, :current_password)
   end
+
+  protected
+  def after_sign_up_path_for(resource)
+    if current_user.host?
+      '/organizations/' # Or :prefix_to_your_route
+    elsif current_user.user?
+      user_events_event_path
+    end
+  end
 end

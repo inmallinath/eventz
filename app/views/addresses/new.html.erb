@@ -4,10 +4,10 @@
   <%= f.input :description, label: "Address" %>
   <%= f.input :zip, label: "Zip / Postal Code" %>
   <%= f.select :country_id, options_for_select(@countries.collect { |country|
-    [country.description.titleize, country.id] }, 1), {}, { id: 'countries_select' } %>
+    [country.description.titleize, country.id] }, prompt: 'Select Country'), {}, { id: 'countries_select', class: 'form-control' } %>
   <%= f.select :state_id, options_for_select(@states.collect { |state|
-    [state.description.titleize, state.id] }, 0), {}, { id: 'states_select' } %>
+    [state.description.titleize, state.id] }, prompt: 'Select State'), {}, { id: 'states_select', class: 'form-control'  } %>
   <%= f.select :city_id, options_for_select(@cities.collect { |city|
-    [city.code.titleize, city.id] }, 0), {}, { id: 'cities_select' } %>
+    [city.code.titleize, city.id] }, prompt: 'Select City'), {}, { id: 'cities_select', class: 'form-control'  } %>
   <%= f.submit %>
 <% end %>

@@ -9,4 +9,6 @@ class WelcomeController < ApplicationController
     # @city = City.find_by("id = ?", params[:address][:city_id])
   end
 
+  def index_oauth
+  end
 end

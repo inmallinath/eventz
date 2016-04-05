@@ -49,6 +49,10 @@ class EventsController < ApplicationController
 
   def new
     @event = Event.new
+    @event.build_address
+    @countries = Country.all
+    @states = State.where("country_id=?", Country.first.id)
+    @cities = City.where("metro=? and state_id=? ", true, State.first.id)
   end
 
   def create
@@ -63,11 +67,29 @@ class EventsController < ApplicationController
   end
 
   def show
-
+    
   end
 
   def edit
 
+  end
+
+  def user_events
+
+  end
+
+  def update_states
+    @states = State.where("country_id=?", params[:country_id])
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_cities
+    @cities = City.where("metro=? and state_id=?", true, params[:state_id]).order("code ASC")
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update
@@ -91,6 +113,6 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit([:title, :description, :paid, :price, :event_on, :start, :end, :day_of_week, :event_data, :address_id, :event_category_id, :unit_id, :speaker_id])
+    params.require(:event).permit([:title, :description, :paid, :price, :event_on, :start, :end, :day_of_week, :event_data, :address_id, :event_category_id, :unit_id, :speaker_id], :address_attributes=>[:description, :zip, :country_id, :state_id, :city_id, :id])
   end
 end

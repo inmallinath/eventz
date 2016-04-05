@@ -10,29 +10,41 @@ Rails.application.routes.draw do
   # resources :welcome, only: [:index, :show]
 
   # ADDRESS CONTROLLER ROUTES
-  resources :addresses do
-    collection do
-      get :update_states
-      get :update_cities
-    end
-  end
+
   # CALENDAR ROUTES
   resources :calendars, only: [:index]
 
   # EVENT ROUTES
-  resources :events
+  resources :events do
+    member do
+      get :user_events
+    end
+    resources :addresses, only: [:create] do
+      collection do
+        get :update_states
+        get :update_cities
+      end
+    end
+  end
+
+  get 'welcome/index_oauth', as: :index_oauth
   # EVENT ORGANIZATIONS
-  resources :organizations
+  # resources :organizations
   # EVENT UNITS
-  resources :units
+  # resources :units
   # EVENT UNIT TYPES
-  resources :unit_types
+  # resources :unit_types
   # ORGANIZATION EVENTS
-  resources :organization_events
+  # resources :organization_events
   # EVENT CATEGORIES
-  resources :event_categories
+  # resources :event_categories
 
-
+  resources :users_admin, only: [:update_role] do
+    member do
+      get :update_role
+      put :update_role
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

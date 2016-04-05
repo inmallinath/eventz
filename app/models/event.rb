@@ -1,9 +1,11 @@
 class Event < ActiveRecord::Base
-  belongs_to :address
+  has_one :address
+  accepts_nested_attributes_for :address
   belongs_to :event_category
   belongs_to :unit
   belongs_to :speaker, class_name: "User"
   # has_many :cities, through: :address
+  # has_many :addresses, dependent: :destroy
 
 
   def self.for_date(date)
