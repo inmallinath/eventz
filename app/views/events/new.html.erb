@@ -5,7 +5,7 @@
   <%= f.check_box :paid%> PAID EVENT?
   <%= f.input :price %>
   <%= f.collection_select(:event_category_id, EventCategory.order(:name), :id, :name, {prompt: "Select a category"}, {class: "form-control"}) %>
-  <%= f.input :date, as: :string, input_html: { :class=>'input-group date', :id=>'datetimepicker1'}  %>
+  <%= f.input :event_on, as: :string, input_html: {:class=>'input-group date', :id=>'datetimepicker1'}  %>
   <%= f.input :start, as: :string, input_html: {:class=>'input-group date', :id=>'datetimepicker2'}  %>
   <%= f.input :end, as: :string, input_html: {:class=>'input-group date', :id=>'datetimepicker3'}  %>
   <%#= f.hidden_field :date, value: params[:date]%>

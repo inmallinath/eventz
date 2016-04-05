@@ -36,7 +36,7 @@ gem 'cancancan'
 # gem 'unicorn'
 
 # CALENDAR EVENTS
-gem "simple_calendar", "~> 2.0"
+gem 'simple_calendar', '~> 2.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
