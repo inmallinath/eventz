@@ -5,6 +5,7 @@ class EventsController < ApplicationController
 
   def index
     @city = City.find_by_id params[:city]
+    puts @city
     @events = @city.events
 
     @map_hash = Gmaps4rails.build_markers(@events) do |event, marker|
@@ -32,7 +33,17 @@ class EventsController < ApplicationController
     end
     # compact deletes all the nil records
     @meetup_events = @meetup_events.compact
-    ap @meetup_events
+
+    @meetup_hash = Gmaps4rails.build_markers(@meetup_events) do |event, marker|
+      marker.lat event['latitude']
+      marker.lng event['longitude']
+      marker.infowindow event['name']
+      marker.picture({
+                  :url => 'http://img1.meetupstatic.com/img/94156887029318281691566697/logo.svg',
+                  :width   => 60,
+                  :height  => 60
+          })
+    end
     render layout: 'event_index'
   end
 
@@ -80,6 +91,6 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit([:title, :description, :paid, :price, :date, :start, :end, :day_of_week, :event_data, :address_id, :event_category_id, :unit_id, :speaker_id])
+    params.require(:event).permit([:title, :description, :paid, :price, :event_on, :start, :end, :day_of_week, :event_data, :address_id, :event_category_id, :unit_id, :speaker_id])
   end
 end

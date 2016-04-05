@@ -30,13 +30,15 @@ class User < ActiveRecord::Base
      "#{first_name} #{last_name}".titleize
    end
 
-  #  def speaker?
-  #    if "#{role} = Speaker"
-  #      true
-  #    else
-  #      false
-  #    end
-  #  end
+  def speaker?
+    self.role == "Speaker"
+  end
+  def user?
+    self.role == "User"
+  end
+  def host?
+    self.role == "Host"
+  end
    #
   #  def host?
   #    if "#{role} = Host"

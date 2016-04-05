@@ -1,6 +1,13 @@
 <h1>Create an Event</h1>
-<%= form_for @event do |f| %>
-  <%= f.text_field :title %>
-  <%= f.hidden_field :date, value: params[:date]%>
-  <%= f.submit%>
+<%= simple_form_for @event do |f| %>
+  <%= f.input :title %>
+  <%= f.input :description %>
+  <%= f.check_box :paid%> PAID EVENT?
+  <%= f.input :price %>
+  <%= f.collection_select(:event_category_id, EventCategory.order(:name), :id, :name, {prompt: "Select a category"}, {class: "form-control"}) %>
+  <%= f.input :date, as: :string, input_html: { :class=>'input-group date', :id=>'datetimepicker1'}  %>
+  <%= f.input :start, as: :string, input_html: {:class=>'input-group date', :id=>'datetimepicker2'}  %>
+  <%= f.input :end, as: :string, input_html: {:class=>'input-group date', :id=>'datetimepicker3'}  %>
+  <%#= f.hidden_field :date, value: params[:date]%>
+  <%= f.submit class: "btn btn-primary" %>
 <%end%>

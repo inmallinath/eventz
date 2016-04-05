@@ -8,4 +8,5 @@ class City < ActiveRecord::Base
   def city_country
     "#{code}" + ", " + "#{country.description}"
   end
+
 end

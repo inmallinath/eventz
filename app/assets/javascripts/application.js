@@ -15,4 +15,15 @@
 //= require turbolinks
 //= require underscore
 //= require gmaps/google
+//= require moment
+//= require bootstrap-datetimepicker
 //= require_tree .
+$(function () {
+  $('#datetimepicker1').datetimepicker();
+  $('#datetimepicker2').datetimepicker({
+    format: 'LT'
+  });
+  $('#datetimepicker3').datetimepicker({
+    format: 'LT'
+  });
+});
