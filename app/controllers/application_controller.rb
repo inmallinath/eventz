@@ -7,4 +7,9 @@ class ApplicationController < ActionController::Base
     # request.env['omniauth.origin'] || stored_location_for(resource) || root_path
     index_oauth_path
   end
+
+  def logged_in_using_omniauth?
+    session[:logged_in_using_omniauth].present?
+  end
+  helper_method :logged_in_using_omniauth?
 end

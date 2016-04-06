@@ -33,4 +33,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  def session_omniauth
+    session[:logged_in_using_omniauth] = true
+  end
+
 end

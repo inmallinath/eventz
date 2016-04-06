@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :events do
     member do
       get :user_events
+      get :index_calendar
     end
     resources :addresses, only: [:create] do
       collection do
