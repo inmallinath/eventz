@@ -5,7 +5,7 @@ class EventsController < ApplicationController
 
   def index
     @city = City.find_by_id params[:city]
-    puts @city
+    # puts @city
     @events = @city.events
 
     @map_hash = Gmaps4rails.build_markers(@events) do |event, marker|
@@ -47,6 +47,14 @@ class EventsController < ApplicationController
     render layout: 'event_index'
   end
 
+  def index_calendar
+    @events = Events.all
+  end
+
+  def create_calendar_event
+    
+  end
+
   def new
     @event = Event.new
     @event.build_address
@@ -58,6 +66,41 @@ class EventsController < ApplicationController
   def create
     @event = Event.new event_params
     if @event.save
+      summary = event_params['title']
+      description = event_params['description']
+      address = event_params['address_attributes']['description']
+      zip = event_params['address_attributes']['zip']
+      country = Country.find_by_id(event_params['address_attributes']['country_id']).description
+      state = State.find_by_id(event_params['address_attributes']['state_id']).code
+      city = City.find_by_id(event_params['address_attributes']['city_id']).code
+      byebug
+      startdate = event_params[:event_on].to_datetime
+      starttime = event_params[:start].to_time
+      gstart = DateTime.new
+      gstart = startdate.change({hour: starttime.hour, min: starttime.min})
+      enddate = event_params[:event_on].to_datetime
+      endtime = event_params[:end].to_time
+      gend = DateTime.new
+      gend = enddate.change({hour: starttime.hour, min: starttime.min})
+
+      @google_event = {
+        'summary' => summary,
+        'description' => description,
+        'location' => location,
+        'start' => {'dateTime' => gstart},
+        'end' => {'dateTime' => gend},
+        'attendees' => [ { "email" => 'inmallinath@hotmail.com' } ]
+      }
+
+      client = Google::APIClient.new
+
+      client.authorization.access_token = current_user.identities.first.accesstoken
+      service = client.discovered_api('calendar', 'v3')
+      @set_event = client.execute(:api_method => service.events.insert,
+                          :parameters => {'calendarId' => current_user.email, 'sendNotifications' => true},
+                          :body => JSON.dump(@google_event),
+                          :headers => {'Content-Type' => 'application/json'})
+
       flash[:notice] = "Event Saved Successfully"
       redirect_to event_path(@event) # currently using calendar_path
     else
@@ -67,7 +110,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    
+
   end
 
   def edit
