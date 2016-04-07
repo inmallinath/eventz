@@ -30,7 +30,7 @@
 </div>
 <%if current_user%>
   <% if current_user.host?%>
-    <p><%= link_to "Host an Event", new_event_path, method: :get, :class=>'btn btn-primary btn-lg', :id=>'new_event_button'%></p>
+    <p><%= link_to "Host an Event", new_event_path,  'data-no-turbolink' => true, method: :get, :class=>'btn btn-primary btn-lg', :id=>'new_event_button'%></p>
   <% end %>
 <% else %>
 <p><%= link_to "Register to add new events", new_user_registration_path, method: :get, :class=>'btn btn-primary btn-lg', :id=>'register_button'%></p>
