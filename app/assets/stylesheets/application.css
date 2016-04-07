@@ -12,9 +12,10 @@
  *
  *= require_tree .
  *= require_self
- *= require simple_calendar
+
  */
  body {
   padding-top: 60px;
    /*padding-bottom: 0px;*/
  }
+/**= require simple_calendar*/

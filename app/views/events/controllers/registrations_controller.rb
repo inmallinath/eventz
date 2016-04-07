@@ -30,7 +30,7 @@ class RegistrationsController < Devise::RegistrationsController
       '/organizations/' # Or :prefix_to_your_route
     elsif current_user.user?
       # user_events_event_path
-      new_event_path
+      new_event_path, 'data-no-turbolink' => true
     end
   end
 end

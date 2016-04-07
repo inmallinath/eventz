@@ -3,7 +3,7 @@ class UsersAdminController < ApplicationController
     @user = current_user
     if @user.update_attribute(:role, params[:form_user][:role])
       flash[:notice] = "User updated Successfully"
-      redirect_to new_event_path # currently using calendar_path
+      redirect_to new_event_path,  'data-no-turbolink' => true # currently using calendar_path
     else
       flash[:alert] = "Event could not be saved"
       render :nothing
