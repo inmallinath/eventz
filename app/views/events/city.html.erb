@@ -22,13 +22,13 @@
             <td><%= event.address.full_street_address %></td>
             <!-- <td><%#= event.address.description %></td> -->
             <td><%= event.event_on.strftime('%B %d, %Y') %></td>
-            <td><%= event.start.strftime('%I : %M') %></td>
-            <td><%= event.end.strftime('%I : %M') %></td>
+            <td><%= event.start.strftime('%I : %M %p') %></td>
+            <td><%= event.end.strftime('%I : %M %p') %></td>
       <% end %>
     </tbody>
   </table>
 </div>
-<%if current_user%>
+<% if current_user %>
   <% if current_user.host?%>
     <p><%= link_to "Host an Event", new_event_path,  'data-no-turbolink' => true, method: :get, :class=>'btn btn-primary btn-lg', :id=>'new_event_button'%></p>
   <% end %>

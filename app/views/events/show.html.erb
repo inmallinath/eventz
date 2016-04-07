@@ -15,11 +15,11 @@
 
 <p>
   <strong>Start time:</strong>
-  <%= @event.start.strftime('%I : %M') %>
+  <%= @event.start.strftime('%I : %M %p') %>
 </p>
 <p>
   <strong>End time:</strong>
-  <%= @event.end.strftime('%I : %M') %>
+  <%= @event.end.strftime('%I : %M %p') %>
 </p>
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
