@@ -3,3 +3,43 @@
 //      width: 470px;
 //      display: inline-block;
 // }
+
+.simple-calendar{
+  width: 95%;
+  height: 95%;
+
+  .day {
+    width: 200px;
+    height: 100px;
+    border: 2px solid black;
+  }
+
+  .wday-0 {}
+  .wday-1 {}
+  .wday-2 {}
+  .wday-3 {}
+  .wday-4 {}
+  .wday-5 {}
+  .wday-6 {}
+
+  .today {
+    background-color: rgb(1, 167, 140);
+  }
+  .past {}
+  .future {}
+
+  .start-date {}
+
+  .prev-month {
+    background-color: rgb(200, 200, 200);
+  }
+  .next-month {
+    background-color: rgb(200, 200, 200);
+  }
+  .current-month {}
+
+  .has-events {
+    background-color: rgb(254, 147, 79);
+
+  }
+}

@@ -1,9 +1,13 @@
 require 'meetup'
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:index]
+  before_action :authenticate_user!, except: [:city]
   before_action :find_event, only: [:show, :edit, :update, :destroy]
 
   def index
+    @events = Event.all
+  end
+
+  def city
     @city = City.find_by_id params[:city]
     # puts @city
     @events = @city.events
@@ -44,15 +48,11 @@ class EventsController < ApplicationController
                   :height  => 60
           })
     end
-    render layout: 'event_index'
+    render layout: 'city_events'
   end
 
   def index_calendar
-    @events = Events.all
-  end
-
-  def create_calendar_event
-    
+    @events = Event.all
   end
 
   def new
@@ -65,47 +65,49 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new event_params
-    if @event.save
-      summary = event_params['title']
-      description = event_params['description']
-      address = event_params['address_attributes']['description']
-      zip = event_params['address_attributes']['zip']
-      country = Country.find_by_id(event_params['address_attributes']['country_id']).description
-      state = State.find_by_id(event_params['address_attributes']['state_id']).code
-      city = City.find_by_id(event_params['address_attributes']['city_id']).code
-      byebug
-      startdate = event_params[:event_on].to_datetime
-      starttime = event_params[:start].to_time
-      gstart = DateTime.new
-      gstart = startdate.change({hour: starttime.hour, min: starttime.min})
-      enddate = event_params[:event_on].to_datetime
-      endtime = event_params[:end].to_time
-      gend = DateTime.new
-      gend = enddate.change({hour: starttime.hour, min: starttime.min})
+    respond_to do |format|
+      if @event.save
+        # byebug
+        summary = event_params['title']
+        description = event_params['description']
+        address = event_params['address_attributes']['description']
+        zip = event_params['address_attributes']['zip']
+        country = Country.find_by_id(event_params['address_attributes']['country_id']).description
+        state = State.find_by_id(event_params['address_attributes']['state_id']).code
+        city = City.find_by_id(event_params['address_attributes']['city_id']).code
+        # byebug
+        startdate = event_params[:event_on].to_datetime
+        starttime = event_params[:start].to_time
+        gstart = DateTime.new
+        gstart = startdate.change({hour: starttime.hour, min: starttime.min})
+        enddate = event_params[:event_on].to_datetime
+        endtime = event_params[:end].to_time
+        gend = DateTime.new
+        gend = enddate.change({hour: starttime.hour, min: starttime.min})
 
-      @google_event = {
-        'summary' => summary,
-        'description' => description,
-        'location' => location,
-        'start' => {'dateTime' => gstart},
-        'end' => {'dateTime' => gend},
-        'attendees' => [ { "email" => 'inmallinath@hotmail.com' } ]
-      }
+        @google_event = {
+          'summary' => summary,
+          'description' => description,
+          'location' => location,
+          'start' => {'dateTime' => gstart},
+          'end' => {'dateTime' => gend},
+          'attendees' => [ { "email" => 'inmallinath@hotmail.com' } ]
+        }
 
-      client = Google::APIClient.new
+        client = Google::APIClient.new
 
-      client.authorization.access_token = current_user.identities.first.accesstoken
-      service = client.discovered_api('calendar', 'v3')
-      @set_event = client.execute(:api_method => service.events.insert,
-                          :parameters => {'calendarId' => current_user.email, 'sendNotifications' => true},
-                          :body => JSON.dump(@google_event),
-                          :headers => {'Content-Type' => 'application/json'})
-
-      flash[:notice] = "Event Saved Successfully"
-      redirect_to event_path(@event) # currently using calendar_path
-    else
-      flash[:alert] = "Event could not be saved"
-      render :new
+        client.authorization.access_token = current_user.identities.first.accesstoken
+        service = client.discovered_api('calendar', 'v3')
+        @set_event = client.execute(:api_method => service.events.insert,
+                            :parameters => {'calendarId' => current_user.email, 'sendNotifications' => true},
+                            :body => JSON.dump(@google_event),
+                            :headers => {'Content-Type' => 'application/json'})
+        format.html { redirect_to event_path(@event), notice: "Event Saved Successfully"}
+        format.json { render :show, status: :created, location: @event }
+      else
+        format.html { render :new }
+        format.json { render json: @event.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -114,6 +116,10 @@ class EventsController < ApplicationController
   end
 
   def edit
+    @event.address || @event.build_address
+    @countries = [@event.address.country].compact
+    @states = [@event.address.state].compact
+    @cities = [@event.address.city].compact
 
   end
 
@@ -136,26 +142,34 @@ class EventsController < ApplicationController
   end
 
   def update
-    if @event.update event_params
-      flash[:notice] = "Event Updated Successfully"
-      redirect_to event_path(@event)
-    else
-      flash[:alert] = "Event Could not be Updated"
-      render :edit
+    respond_to do |format|
+      if @event.update event_params
+        format.html { redirect_to event_path(@event), notice: "Event Updated Successfully" }
+        format.json { render :show, status: :ok, location: @event }
+      else
+        format.html { render :edit }
+        format.json { render json: @event.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
     @event.destroy
-    redirect_to events_path, notice: "Removed successfully"
+    respond_to do |format|
+      format.html { redirect_to events_path, notice: "Removed successfully"}
+      format.json { head :no_content }
+    end
   end
+
   private
 
   def find_event
-    @event = Event.find params[:id]
+    @event = Event.find(params[:id])
   end
 
   def event_params
-    params.require(:event).permit([:title, :description, :paid, :price, :event_on, :start, :end, :day_of_week, :event_data, :address_id, :event_category_id, :unit_id, :speaker_id], :address_attributes=>[:description, :zip, :country_id, :state_id, :city_id, :id])
+    params.require(:event).permit(:title, :description, :paid, :price, :event_on, :start, :end, :day_of_week, :event_data, :address_id, :event_category_id, :unit_id, :speaker_id, :address_attributes => [:description, :zip, :country_id, :state_id, :city_id, :id, :_destroy])
+    # params.require(:event).permit(:title, :description, :paid, :price, :event_on, :start, :end, :day_of_week, :event_data, :address_id, :event_category_id, :unit_id, :speaker_id, :address_attributes => ["description", "zip", "country_id", "state_id", "city_id", "id", "_destroy"])
+
   end
 end

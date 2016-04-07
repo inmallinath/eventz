@@ -1,59 +1,31 @@
-<div class="page-header">
-  <%= link_to new_event_path, class: 'btn btn-primary' do %>
-    <span class="glyphicon glyphicon-plus"></span>
-    New Event
-  <% end %>
+<h1>Listing events</h1>
+
+<div id="events_calendar">
+  <%= render partial: "calendar", locals: {events: @events} %>
 </div>
-<div class="table-responsive">
-  <table class="table table-striped table-bordered table-hover">
-    <thead>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Date</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @events.each do |event| %>
       <tr>
-        <th>Latitude</th>
-        <th>Longitude</th>
-        <th>Event Name</th>
-        <th>Location</th>
-        <th>Event On</th>
+        <td><%= event.title %></td>
+        <td><%= event.event_on.strftime('%B %d, %Y') %></td>
+        <td><%= link_to 'Show', event %></td>
+        <td><%= link_to 'Edit', edit_event_path(event) %></td>
+        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
-      <tr>
-        <td colspan="100%">
-          <h1>Featured Events</h1>
-        </td>
-      </tr>
-    </thead>
-    <tbody>
-      <%= content_tag_for(:tr, @events) do |event| %>
-            <td><%= event.address.latitude %></td>
-            <td><%= event.address.longitude %></td>
-            <td><%= event.title %></td>
-            <td><%= event.address.description %></td>
-            <td><%= event.event_on %></td>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<%if current_user%>
-  <% if user_signed_in? %>
-  <p>
-    Signed in user view
-  </p>
-  <%elsif current_user.host?%>
-    <p><%= link_to "Host an Event", new_event_path, method: :get, :class=>'btn btn-primary btn-lg', :id=>'new_event_button'%></p>
-  <% end %>
-<% else %>
-<p><%= link_to "Register to add new events", new_user_registration_path, method: :get, :class=>'btn btn-primary btn-lg', :id=>'register_button'%></p>
+    <% end %>
+  </tbody>
+</table>
 
-<%end%>
-<div style='width: 800px;'>
-  <div id="multi_markers" style='width: 800px; height: 400px;'></div>
-</div>
+<br>
 
-<script type="text/javascript">
-handler = Gmaps.build('Google');
-handler.buildMap({ provider: {}, internal: {id: 'multi_markers'}}, function(){
-  markers = handler.addMarkers(<%=raw @map_hash.to_json %>);
-  markers = handler.addMarkers(<%=raw @meetup_hash.to_json %>);
-  handler.bounds.extendWith(markers);
-  handler.fitMapToBounds();
-});
-
-</script>
+<%= link_to 'New Event', new_event_path %>

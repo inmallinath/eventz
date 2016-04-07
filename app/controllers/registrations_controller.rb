@@ -29,7 +29,8 @@ class RegistrationsController < Devise::RegistrationsController
     if current_user.host?
       '/organizations/' # Or :prefix_to_your_route
     elsif current_user.user?
-      user_events_event_path
+      # user_events_event_path
+      events_path
     end
   end
 end

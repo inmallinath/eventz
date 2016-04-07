@@ -9,7 +9,7 @@
   margin-top: -50px;
   margin-left: -150px;">
    <div class="col-xs-4">
-      <%= simple_form_for 'city', url: events_path, method: :get do |f| %>
+      <%= simple_form_for 'city', url: city_events_path, method: :get do |f| %>
       <%= f.input "", :collection => @cities.map{|c| [c.city_country, c.id]}, label:false, include_blank: false, input_html: {class: 'form-group'}%>
       <%= f.submit "Explore!", class: 'btn btn-primary col-md-12'%>
       <% end %>

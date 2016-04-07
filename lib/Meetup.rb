@@ -2,7 +2,7 @@
   class Meetup
     include HTTParty
     base_uri 'https://api.meetup.com'
-    default_params state: 'BC', country: 'ca', status: 'upcoming', page: 10
+    default_params state: 'BC', country: 'ca', status: 'upcoming', page: 20
 
     def initialize(key)
       self.class.default_params key: key

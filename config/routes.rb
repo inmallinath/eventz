@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
   # GET MEETUP EVENTS
-  match ':controller(/:action(/:id(.:format)))', via: :get
+  # match ':controller(/:action(/:id(.:format)))', via: :get # WORKING
+  # match ':controller(/:action(/:id(.:format)))', via: :get
+  # match ':events/:update_states/(:id)', via: :get
+  # match ':addresses(/:create(/:id(.:format)))', via: :get
+  # get => ':addresses(/:create(/:id(.:format)))' => 'events#update_states'
+
+  get 'events/update_states'
+  get 'events/update_cities'
   # ROOT OF THE APPLICATION
   root 'welcome#index'
   # AUTHENTICATION FOR THE APP
@@ -12,19 +19,21 @@ Rails.application.routes.draw do
   # ADDRESS CONTROLLER ROUTES
 
   # CALENDAR ROUTES
-  resources :calendars, only: [:index]
+  # resources :calendars, only: [:index]
 
   # EVENT ROUTES
   resources :events do
     member do
-      get :user_events
       get :index_calendar
     end
+    collection do
+      get :city
+    end
     resources :addresses, only: [:create] do
-      collection do
-        get :update_states
-        get :update_cities
-      end
+      # collection do
+      #   get :update_states
+      #   get :update_cities
+      # end
     end
   end
 

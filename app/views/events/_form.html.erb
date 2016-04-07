@@ -1,0 +1,40 @@
+<%= simple_form_for @event do |f| %>
+  <%= f.input :title %>
+  <%= f.input :description %>
+  <%= f.check_box :paid%> PAID EVENT?
+  <%= f.input :price %>
+  <%= f.collection_select(:event_category_id, EventCategory.order(:name), :id, :name, {prompt: "Select a category"}, {class: "form-control"}) %>
+  <%= f.input :event_on, as: :string, input_html: {:class=>'input-group date', :id=>'datetimepicker1'}  %>
+  <%= f.input :start, as: :string, input_html: {:class=>'input-group date', :id=>'datetimepicker2'}  %>
+  <%= f.input :end, as: :string, input_html: {:class=>'input-group date', :id=>'datetimepicker3'}  %>
+  <%= f.collection_select(:id, User.where("role=?","Speaker").all, :id, :full_name, {prompt: "Select a Speaker for the event"}, {class: "form-control"}) %>
+
+<div class="page-header">
+  <button id="add-address" class="btn btn-primary"%>
+    <span class="glyphicon glyphicon-plus"></span>
+    Add Location</button>
+  <%# end %>
+</div>
+
+<div class="address-form" id="address">
+  <%= f.simple_fields_for :address do |a|%>
+    <%= a.input :description, label: "Address" %>
+    <%= a.input :zip, label: "Zip / Postal Code" %>
+    <%= a.select :country_id, options_for_select(@countries.collect { |country|
+      [country.description.titleize, country.id] }, prompt: 'Select Country'), {}, { id: 'countries_select', class: 'form-control' } %>
+    <%= a.select :state_id, options_for_select(@states.collect { |state|
+      [state.description.titleize, state.id] }, prompt: 'Select State'), {}, { id: 'states_select', class: 'form-control'  } %>
+    <%= a.select :city_id, options_for_select(@cities.collect { |city|
+      [city.code.titleize, city.id] }, prompt: 'Select City'), {}, { id: 'cities_select', class: 'form-control'  } %>
+  <%end%>
+  <%= f.submit class: "btn btn-primary" %>
+<%end%>
+</div>
+<script>
+
+</script>
+<style>
+  .address-form{
+    display:none;
+  }
+</style>

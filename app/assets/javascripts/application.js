@@ -18,7 +18,7 @@
 //= require moment
 //= require bootstrap-datetimepicker
 //= require_tree .
-$(function () {
+$(document).ready(function(){
   $('#datetimepicker1').datetimepicker({
     format: 'DD-MM-YYYY HH:mm:ss'
   });
@@ -28,4 +28,12 @@ $(function () {
   $('#datetimepicker3').datetimepicker({
     format: 'LT'
   });
+  $('#add-address').click(function(e){
+    // alert('here');
+    e.preventDefault();
+    $('.address-form').slideToggle("slow", function() {
+      window.location.hash = "#address";
+    });
+   // Animation complete.
+ });
 });
