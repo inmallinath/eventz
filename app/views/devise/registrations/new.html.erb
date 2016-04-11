@@ -15,6 +15,9 @@
   <div class="form-actions">
     <%= f.button :submit, "Sign up" %>
   </div>
-<% end %>
+<% end %><br />
 
-<%= render "devise/shared/links" %>
+<%#= render "devise/shared/links" %>
+<%#= image_tag("/assets/google.png", :alt => "home image", :title => "Click here to return to Home") "/" %>
+<%=link_to image_tag("/assets/google.png", :width => 250, :height => 80), "/users/auth/google_oauth2"%>
+<%=link_to image_tag("/assets/twitter.png", :width => 250, :height => 80), "/users/auth/twitter"%>

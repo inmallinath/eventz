@@ -10,6 +10,10 @@
   <div class="form-actions">
     <%= f.button :submit, "Log in" %>
   </div>
-<% end %>
+<% end %> <br />
 
-<%= render "devise/shared/links" %>
+<%=link_to image_tag("/assets/google.png", :width => 250, :height => 80), "/users/auth/google_oauth2"%>
+<%=link_to image_tag("/assets/twitter.png", :width => 250, :height => 80), "/users/auth/twitter"%>
+
+
+<%#= render "devise/shared/links" %>

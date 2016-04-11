@@ -8,9 +8,20 @@
   width: 95%;
   height: 95%;
 
+  #calendar-next-prev{
+    margin-top: 0px;
+    padding-top: 0px;
+    text-align: center;
+  }
+
+  #month-text{
+    color: red;
+    font-size: 28px;
+  }
+
   .day {
-    width: 200px;
-    height: 100px;
+    width: 180px;
+    height: 90px;
     border: 2px solid black;
   }
 
