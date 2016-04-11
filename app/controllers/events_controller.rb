@@ -68,6 +68,12 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         # byebug
+#         DateTime startDateTime = new DateTime("2015-05-28T09:00:00-07:00");
+# EventDateTime start = new EventDateTime()
+#     .setDateTime(startDateTime)
+#     .setTimeZone("America/Los_Angeles");
+# event.setStart(start);
+
         summary = event_params['title']
         description = event_params['description']
         address = event_params['address_attributes']['description']
@@ -79,18 +85,20 @@ class EventsController < ApplicationController
         startdate = event_params[:event_on].to_datetime
         starttime = event_params[:start].to_time
         gstart = DateTime.new
+        # gstart.setTimeZone("US/Pacific");
         gstart = startdate.change({hour: starttime.hour, min: starttime.min})
         enddate = event_params[:event_on].to_datetime
         endtime = event_params[:end].to_time
         gend = DateTime.new
+        # gend.setTimeZone("US/Pacific");
         gend = enddate.change({hour: starttime.hour, min: starttime.min})
 
         @google_event = {
           'summary' => summary,
           'description' => description,
           'location' => location,
-          'start' => {'dateTime' => gstart},
-          'end' => {'dateTime' => gend},
+          'start' => {'dateTime' => gstart, 'time_zone' =>'US/Pacific'},
+          'end' => {'dateTime' => gend, 'time_zone' =>'US/Pacific'},
           'attendees' => [ { "email" => 'inmallinath@hotmail.com' } ]
         }
 
