@@ -1,4 +1,4 @@
-require 'meetup'
+require './lib/Meetup.rb'
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:city]
   before_action :find_event, only: [:show, :edit, :update, :destroy]
