@@ -1,5 +1,5 @@
 class AddDefaultToCapacityUnits < ActiveRecord::Migration
   def change
-    change_column :units, :capacity, default: 0
+    change_column_default :units, :capacity, 0
   end
 end
