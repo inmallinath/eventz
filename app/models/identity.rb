@@ -14,9 +14,7 @@ class Identity < ActiveRecord::Base
     identity.image = auth.info.image
     identity.phone = auth.info.phone
     identity.urls = (auth.info.urls || "").to_json
-    # if auth.provider != 'twitter'
-      identity.expires_at = Time.at(auth.credentials['expires_at']).try(:to_datetime) if auth.credentials['expires_at']
-    # end
+    identity.expires_at = Time.at(auth.credentials['expires_at']).try(:to_datetime) if auth.credentials['expires_at']
     identity.save
     identity
   end

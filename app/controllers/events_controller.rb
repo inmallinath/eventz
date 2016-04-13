@@ -66,6 +66,7 @@ class EventsController < ApplicationController
   def create
     @event = Event.new event_params
     respond_to do |format|
+
       if @event.save
         # byebug
 #         DateTime startDateTime = new DateTime("2015-05-28T09:00:00-07:00");
@@ -101,17 +102,21 @@ class EventsController < ApplicationController
           'end' => {'dateTime' => gend, 'time_zone' =>'US/Pacific'},
           'attendees' => [ { "email" => 'inmallinath@hotmail.com' } ]
         }
+        if current_user.identities.first.provider != 'twitter'
+          client = Google::APIClient.new
 
-        client = Google::APIClient.new
-
-        client.authorization.access_token = current_user.identities.first.accesstoken
-        service = client.discovered_api('calendar', 'v3')
-        @set_event = client.execute(:api_method => service.events.insert,
-                            :parameters => {'calendarId' => current_user.email, 'sendNotifications' => true},
-                            :body => JSON.dump(@google_event),
-                            :headers => {'Content-Type' => 'application/json'})
-        format.html { redirect_to event_path(@event), notice: "Event Saved Successfully"}
-        format.json { render :show, status: :created, location: @event }
+          client.authorization.access_token = current_user.identities.first.accesstoken
+          service = client.discovered_api('calendar', 'v3')
+          @set_event = client.execute(:api_method => service.events.insert,
+                              :parameters => {'calendarId' => current_user.email, 'sendNotifications' => true},
+                              :body => JSON.dump(@google_event),
+                              :headers => {'Content-Type' => 'application/json'})
+          format.html { redirect_to event_path(@event), notice: "Event Saved Successfully to your google calendar"}
+          format.json { render :show, status: :created, location: @event }
+        else
+          format.html { redirect_to event_path(@event), notice: "Event Saved Successfully to local calendar"}
+          format.json { render :show, status: :created, location: @event }
+        end
       else
         format.html { render :new }
         format.json { render json: @event.errors, status: :unprocessable_entity }
